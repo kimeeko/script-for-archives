@@ -1,0 +1,33 @@
+#!/bin/bash
+if [ "$#" -ne 2 ]
+then
+	echo "Использование: $0 <директория> <лимит>"
+	exit 1
+fi
+
+directory=$1
+limit=$2
+
+archive_file() {
+	tar -cf archive.tar "$1"
+	echo "Файл $1 заархивирован"
+}
+
+for item in "$directory"/* 
+do
+	if [ -f "$item" ]
+	then
+		filesize=$(stat -c %s "$item")
+		if [ "$filesize" -gt "$limit" ]
+		then
+			archive_file "$item"
+		fi
+	fi
+done
+
+if [ -f "archive.tar" ]
+then
+	echo "Архив создан: $(ls -lh archive.tar)"
+else
+	echo "Файлы не превысили размерный лимит"
+fi
