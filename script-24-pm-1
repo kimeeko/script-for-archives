@@ -9,7 +9,7 @@ directory=$1
 limit=$2
 
 archive_file() {
-	tar -cf archive.tar "$1"
+	tar -cf "$1.tar" "$1"
 	echo "Файл $1 заархивирован"
 }
 
